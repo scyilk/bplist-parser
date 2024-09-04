@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browser Example</title>
+  </head>
+  <body>
+    <label for="file">Valid binary plist file: </label
+    ><input type="file" id="file" accept=".bplist,.plist" /> <br /><button>
+      Convert
+    </button>
+    <script type="module" defer>
+      import { parseBplist } from "/build/index.js"
+      function resolution(result) {
+        document.body.childNodes.forEach(function(c){c.remove()})
+        document.body.appendChild(document.createElement('pre')).innerText = result
+      }
+      document.getElementsByTagName('button')[0].onclick = function () {
+        var json;
+        try {
+          var file = document.getElementById("file").files[0]
+          var reader = new FileReader()
+          reader.readAsArrayBuffer(file)
+          reader.onerror = function(){throw reader.error}
+          reader.onload = function(){
+            resolution(JSON.stringify(parseBplist(reader.result), null, 4))
+          }
+        } catch (error) {
+          resolution(error.message)
+        }
+      };
+    </script>
+  </body>
+</html>
