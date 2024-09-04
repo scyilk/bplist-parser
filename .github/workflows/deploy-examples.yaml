@@ -26,6 +26,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.3
+      - name: npm install
+        run: npm install
       - name: Compile typescript library
         uses: iCrawl/action-tsc@v1
       - name: Move build into examples dir
